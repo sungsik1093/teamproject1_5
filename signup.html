@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="signupstyle.css">
+</head>
+<body>
+    <div class="signup-container">
+        <h2>회원가입</h2>
+        
+        <form action="/submit" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="text" placeholder="이름을 입력해주세요" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="text" placeholder="닉네임을 입력해주세요" name="nickname" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="tel" placeholder="전화번호를 입력해주세요(숫자만)" name="phone" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="text" placeholder="ID를 입력해주세요(학번)" name="id" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" placeholder="비밀번호를 입력해주세요" name="password" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" placeholder="이메일을 입력해주세요" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="file-upload">* MSI 학생 사진 파일을 업로드해주세요</label>
+                <input type="file" id="file-upload" name="student_photo" accept="image/*" required>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit">가입</button>
+                <button type="reset">취소</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
