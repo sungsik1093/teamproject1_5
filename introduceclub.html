@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>띵유 사이트</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        header {
+            background: linear-gradient(45deg, #333, #555);
+            color: #fff;
+            padding: 15px 0;
+        }
+        header h1 {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 1.8em;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: right;
+            margin-right: 20px;
+        }
+        nav ul li {
+            display: inline;
+            margin-left: 15px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #ffb3b3;
+        }
+        .main-content {
+            padding: 40px 0;
+        }
+        .club-image {
+            width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .club-info {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 40px;
+        }
+        .tab-section {
+            margin-top: 30px;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-buttons button {
+            color: #000; 
+            flex: 1;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .tab-buttons button:hover {
+            background-color: #d1d1d1;
+            transform: scale(1.05);
+        }
+        .tab-buttons button.active {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        .tab-content {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .hidden {
+            display: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>띵유 </h1>
+            <nav>
+                <ul>
+                    <li><a href="#">홈</a></li>
+                    <li><a href="#">문의하기</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="main-content">
+        <div class="container">
+            <h2>동아리 소개</h2>
+            <p>우리 동아리는 다양한 활동을 통해 커뮤니티와 소통하며, 모두가 함께 성장할 수 있는 공간을 제공합니다.</p>
+            <img src="club_image.jpg" alt="동아리 사진" class="club-image">
+            <div class="club-info">
+                <p><strong>회장:</strong> 박성식 </p>
+                <p><strong>동아리방:</strong> 학생회관 101호</p>
+                <p><strong>연락처:</strong> 010-1234-5678</p>
+                <p><strong>모임시간:</strong> 매주 화요일 오후 6시</p>
+                <p><strong>모집기간:</strong> 상시 모집</p>
+            </div>
+            <button id="join-btn">가입하기</button>
+
+            <div class="tab-section">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-target="intro">동아리 소개</button>
+                    <button class="tab-button" data-target="activities">활동 내용</button>
+                    <button class="tab-button" data-target="reviews">별점 및 후기</button>
+                </div>
+                <div id="intro" class="tab-content">우리 동아리는 다양한 봉사 활동과 커뮤니티 이벤트를 통해 회원들의 성장을 지원합니다.</div>
+                <div id="activities" class="tab-content hidden">우리는 매주 다양한 프로젝트와 행사에 참여하며, 회원들이 적극적으로 활동할 수 있도록 기회를 제공합니다.</div>
+                <div id="reviews" class="tab-content hidden">회원들의 후기와 별점을 통해 동아리에 대한 솔직한 의견을 공유합니다.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 띵유. 모든 권리 보유.</p>
+        </div>
+    </footer>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+
+                this.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                document.getElementById(target).classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
