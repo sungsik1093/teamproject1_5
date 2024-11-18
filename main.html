@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>띵유(mju united) - 메인 페이지</title>
+    <link rel="stylesheet" href="mainstyle.css">
+    <link rel="stylesheet" href="banner.css">
+    <script src="jquery-3.7.1.js"></script>
+    <script src="banner.js"></script>
+</head>
+
+<body>
+
+    <!-- 사이트 이름과 상단 메뉴 -->
+    <header class="header">
+        <h1 class="site-name">띵유</h1>
+        <div class="top-menu">
+            <div class="links">
+                <a href="mypage.html" class="menu-link" target="_blank">마이페이지</a>
+                <a href="Q&A.html" class="menu-link" target="_blank">Q&A 사이트</a>
+            </div>
+            <div class="auth">
+                <input type="text" placeholder="아이디" class="input-field">
+                <input type="password" placeholder="비밀번호" class="input-field">
+                <button class="login-button">로그인</button>
+                <a href="signup.html" target="_blank"><button class="signup-button">회원가입</button></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="banner">
+        <div class="banner">
+            <ul class="imgslide">
+                <li><img src="paris1.jpg" alt="slideimg1"></li>
+                <li><img src="paris2.jpg" alt="slideimg2"></li>
+                <li><img src="paris3.jpg" alt="slideimg3"></li>
+            </ul>
+        </div>
+        <div class="dotbtn">
+            <button dot-index="0"></button>
+            <button dot-index="1"></button>
+            <button dot-index="2"></button>
+        </div>
+        <div class="lrbtn">
+            <button class="prev"><i class="fa-solid fa-angle-left"></i></button>
+            <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+        </div>
+    </section>
+
+    <nav class="category-nav">
+        <div class="categories">
+            <a href="#all" class="category-link" onclick="showCategory('all')">전체</a>
+            <a href="#academic" class="category-link" onclick="showCategory('academic')">학술</a>
+            <a href="#performance" class="category-link" onclick="showCategory('performance')">공연</a>
+            <a href="#volunteer" class="category-link" onclick="showCategory('volunteer')">봉사</a>
+            <a href="#sports" class="category-link" onclick="showCategory('sports')">운동</a>
+            <a href="#hobby" class="category-link" onclick="showCategory('hobby')">취미</a>
+            <a href="#religion" class="category-link" onclick="showCategory('religion')">종교</a>
+            <a href="#etc" class="category-link" onclick="showCategory('etc')">기타</a>
+        </div>
+
+        <div class="search">
+            <input type="text" placeholder="동아리 이름 검색" class="search-input">
+            <button class="search-button">검색</button>
+            <select class="sort-dropdown">
+                <option value="alphabetical">가나다 순</option>
+                <option value="popularity">인기순</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- 카테고리 섹션 -->
+    <main class="category-section">
+        <section id="all" class="category-content">전체 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="academic" class="category-content">학술 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="performance" class="category-content">공연 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="volunteer" class="category-content">봉사 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="sports" class="category-content">운동 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="hobby" class="category-content">취미 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="religion" class="category-content">종교 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+        <section id="etc" class="category-content">기타 카테고리 콘텐츠가 여기에 표시됩니다.</section>
+    </main>
+
+    <script>
+        // 페이지가 로드될 때 전체 카테고리를 기본으로 표시
+        document.addEventListener("DOMContentLoaded", function () {
+            showCategory('all');
+        });
+
+        // showCategory 함수: 특정 카테고리만 보여주고 나머지는 숨김
+        function showCategory(category) {
+            // 모든 카테고리 섹션을 선택
+            const sections = document.querySelectorAll('.category-content');
+
+            // 모든 섹션을 숨기기
+            sections.forEach((section) => {
+                section.style.display = 'none';
+            });
+
+            // 선택한 카테고리만 표시
+            const activeSection = document.getElementById(category);
+            if (activeSection) {
+                activeSection.style.display = 'block';
+            }
+        }
+
+        /*정렬방식 관련 js*/
+        document.addEventListener("DOMContentLoaded", function () {
+            // 검색 버튼과 정렬 드롭다운 요소 선택
+            const searchButton = document.querySelector('.search-button');
+            const sortDropdown = document.querySelector('.sort-dropdown');
+    
+    
+            // 정렬 드롭다운 값 변경 시, 동아리 목록을 정렬하여 화면에 표시
+            sortDropdown.addEventListener('change', function () {
+                const sortValue = sortDropdown.value;
+    
+                if (sortValue === 'alphabetical') {
+                    // 가나다 순으로 정렬
+                    clubList.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+                } else if (sortValue === 'popularity') {
+                    // 인기 순(??)으로 정렬
+                    clubList.sort((a, b) => b.popularity - a.popularity);
+                }
+    
+                // 정렬된 동아리 목록을 화면에 표시
+                displayClubs(clubList);
+            });
+    
+            // 검색 버튼 클릭 시, 입력된 값과 매칭되는 동아리 목록 필터링
+            searchButton.addEventListener('click', function () {
+                const searchInput = document.querySelector('.search-input').value.trim();
+    
+                // 검색어를 포함하는 동아리 필터링
+                const filteredClubs = clubList.filter(club => club.name.includes(searchInput));
+    
+                // 필터링된 동아리 목록을 화면에 표시
+                displayClubs(filteredClubs);
+            });
+    
+            // 동아리 목록을 화면에 표시하는 함수
+            function displayClubs(clubs) {
+                // 기존 표시된 내용을 초기화
+                const allSection = document.getElementById('all');
+                allSection.innerHTML = '';
+    
+                // 정렬된 동아리 목록을 HTML로 생성하여 추가
+                clubs.forEach(club => {
+                    const clubElement = document.createElement('div');
+                    clubElement.textContent = `${club.name} (인기도: ${club.popularity})`;
+                    allSection.appendChild(clubElement);
+                });
+            }
+    
+            // 페이지 로드 시, 기본 동아리 목록 표시
+            displayClubs(clubList);
+        });
+    </script>
+    
+
+</body>
+
+</html>
