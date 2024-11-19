@@ -55,7 +55,7 @@ body {
 }
 
 /* 홍보 배너 스타일 */
-.banner {
+.banner-container {
     background-color: #ffefba;
     text-align: center;
     padding: 15px;
@@ -117,7 +117,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.banner {
+/* .banner {
     animation: fadeIn 2s ease-in-out infinite alternate;
 }
 
@@ -129,4 +129,4 @@ body {
     100% {
         opacity: 1;
     }
-}
+} */
