@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>띵유(mju united) - 메인 페이지</title>
-    <link rel="stylesheet" href="mainstyle.css">
-    <link rel="stylesheet" href="banner.css">
+    <!--<link rel="stylesheet" href="mainstyle.css">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainstyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='banner.css') }}">
     <script src="https://kit.fontawesome.com/ce8994702e.js" crossorigin="anonymous"></script>
-    <script src="jquery-3.7.1.js"></script>
-    <script src="banner.js"></script>
+    <script src="{{ url_for('static', filename='jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='banner.js') }}"></script>
 </head>
 
 <body>
@@ -19,14 +20,16 @@
         <h1 class="site-name">띵유</h1>
         <div class="top-menu">
             <div class="links">
-                <a href="mypage.html" class="menu-link" target="_blank">마이페이지</a>
-                <a href="Q&A.html" class="menu-link" target="_blank">Q&A 사이트</a>
+                <a href="{{ url_for('mypage') }}" class="menu-link" target="_blank">마이페이지</a>
+                <a href="/qa" class="menu-link" target="_blank">Q&A 사이트</a>
+
             </div>
             <div class="auth">
                 <input type="text" placeholder="아이디" class="input-field">
                 <input type="password" placeholder="비밀번호" class="input-field">
                 <button class="login-button">로그인</button>
-                <a href="signup.html" target="_blank"><button class="signup-button">회원가입</button></a>
+                <a href="/signup" target="_blank"><button class="signup-button">회원가입</button></a>
+
             </div>
         </div>
     </header>
@@ -34,9 +37,9 @@
     <section class="banner-container">
         <div class="banner">
             <ul class="imgslide">
-                <li><img src="images\paris1.jpg" alt="slideimg1"></li>
-                <li><img src="images\paris2.jpg" alt="slideimg2"></li>
-                <li><img src="images\paris3.jpg" alt="slideimg3"></li>
+                <li><img src="{{ url_for('static', filename='이미지파일/paris1.jpg') }}" alt="slideimg1"></li>
+                <li><img src="{{ url_for('static', filename='이미지파일/paris2.jpg') }}" alt="slideimg2"></li>
+                <li><img src="{{ url_for('static', filename='이미지파일/paris3.jpg') }}" alt="slideimg3"></li>
             </ul>
         </div>
         <div class="dotbtn">
