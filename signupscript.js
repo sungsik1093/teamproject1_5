@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
     const passwordInput = document.querySelector("input[name='password']");
     const confirmPasswordInput = document.querySelector("input[name='confirm_password']");
+    const clubInterestCheckboxes = document.querySelectorAll("input[name='club_interest']");
 
     phoneInput.addEventListener("input", function () {
         // 입력된 값에서 숫자만 남기고 나머지 문자 제거
@@ -32,6 +33,18 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             return;
         }
+
+        // 동아리 장르 최소 하나 이상 선택 확인
+        const selectedInterests = Array.from(clubInterestCheckboxes).some(checkbox => checkbox.checked);
+        if (!selectedInterests) {
+            alert("흥미있는 동아리 장르를 최소 하나 이상 선택해주세요.");
+            event.preventDefault();
+            return;
+        }
+
+        // 가입 완료 메시지 표시
+        event.preventDefault(); // 폼의 기본 동작 방지 (테스트 용도로 사용, 실제 제출 시에는 제거)
+        showCompletionMessage();
     });
 
     // 비밀번호 표시 기능 추가 (비밀번호 확인 필드에만)
@@ -52,4 +65,25 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmPasswordInput.type = "password";
         }
     });
+
+    // 가입 완료 메시지 표시 함수
+    function showCompletionMessage() {
+        const messageDiv = document.createElement("div");
+        messageDiv.textContent = "가입신청이 완료되었습니다. 조금만 기다려주세요.";
+        messageDiv.style.position = "fixed";
+        messageDiv.style.top = "20px";
+        messageDiv.style.right = "20px";
+        messageDiv.style.padding = "10px";
+        messageDiv.style.backgroundColor = "#4CAF50";
+        messageDiv.style.color = "#fff";
+        messageDiv.style.borderRadius = "5px";
+        messageDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+
+        document.body.appendChild(messageDiv);
+
+        // 일정 시간 후 메시지 제거
+        setTimeout(() => {
+            document.body.removeChild(messageDiv);
+        }, 3000);
+    }
 });
