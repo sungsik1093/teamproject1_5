@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 
 const ClubCategories = () => {
     const [category, setCategory] = useState('all'); //....... 현재 선택된 카테고리
