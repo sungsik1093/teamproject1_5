@@ -4,34 +4,20 @@ main{
   margin: 0 auto;
   padding: 20px;
 }
-/*
-.star-rating {
-  display: flex;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.fa-star { 비활성화 상태
-  font-size: 24px;
-  color: gray;
-  transition: 0.2s ease-in-out;
-}
-
-.fa-star.active { 활성화 상태
-  color: gold;
-}*/
 
 .star-rating {
   display: flex;
   gap: 5px;
   align-items: center;
 }
+
 .fa-star {
   font-size: 36px;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
   color: gold;
 }
+
 .rating-value {
   font-size: 24px;
   margin-left: 10px;
