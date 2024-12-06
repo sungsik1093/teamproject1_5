@@ -60,13 +60,13 @@
             padding: 40px 0;
         }
 
-        .club-image {
+        /* .club-image {
             width: 100%;
             height: auto;
             margin-top: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+        } */
 
         .club-info {
             margin-top: 20px;
@@ -153,6 +153,22 @@
             opacity: 0;
             pointer-events: none;
         }
+
+        #club-image {
+            width: 100%;
+            max-width: 600px;
+            max-height: 300px;
+        }
+
+        #description-image {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        #activities-image {
+            width: 100%;
+            max-width: 300px;
+        }
     </style>
 </head>
 
@@ -164,21 +180,17 @@
                 <ul>
                     <li><a href="main.html" class="main-page" target="_blank">홈</a></li>
                     <li><a href="Q&A.html" class="Q&A-page" target="_blank">문의하기</a></li>
+                    <li><a href="clubAdmin.html">관리자 페이지</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     <section class="main-content">
         <div class="container">
-            <h2>동아리 소개</h2>
-            <p>우리 동아리는 다양한 활동을 통해 커뮤니티와 소통하며, 모두가 함께 성장할 수 있는 공간을 제공합니다.</p>
-            <img src="club_image.jpg" alt="동아리 사진" class="club-image">
+            <h2 id="club-title">동아리 이름</h2>
+            <p id="club-description">동아리 소개 내용이 여기에 표시됩니다.</p>
+            <img id="club-image" alt="동아리 대표 사진" src="">
             <div class="club-info">
-                <p><strong>회장:</strong> 박성식 </p>
-                <p><strong>동아리방:</strong> 학생회관 101호</p>
-                <p><strong>연락처:</strong> 010-1234-5678</p>
-                <p><strong>모임시간:</strong> 매주 화요일 오후 6시</p>
-                <p><strong>모집기간:</strong> 상시 모집</p>
             </div>
             <button id="join-btn">가입하기</button>
 
@@ -188,9 +200,15 @@
                     <button class="tab-button" data-target="activities">활동 내용</button>
                     <button class="tab-button" data-target="reviews">별점 및 후기</button>
                 </div>
-                <div id="intro" class="tab-content">우리 동아리는 다양한 봉사 활동과 커뮤니티 이벤트를 통해 회원들의 성장을 지원합니다.</div>
-                <div id="activities" class="tab-content hidden">우리는 매주 다양한 프로젝트와 행사에 참여하며, 회원들이 적극적으로 활동할 수 있도록 기회를 제공합니다.</div>
-                <div id="reviews" class="tab-content hidden">회원들의 후기와 별점을 통해 동아리에 대한 솔직한 의견을 공유합니다.</div>
+                <div id="intro" class="tab-content">
+                    <p id="club-description">동아리 소개 내용이 여기에 표시됩니다.</p>
+                    <img id="description-image" alt="동아리 사진" src="">
+                </div>
+                <div id="activities" class="tab-content hidden">
+                    <p id="club-activities">활동 내용이 여기에 표시됩니다.</p>
+                    <img id="activities-image" alt="활동 이미지" src="">
+                </div>
+                <!-- <div id="reviews" class="tab-content hidden">회원들의 후기와 별점을 통해 동아리에 대한 솔직한 의견을 공유합니다.</div> -->
             </div>
         </div>
     </section>
@@ -202,9 +220,65 @@
     </footer>
 
     <script>
+        // 페이지 로드 시 동아리 데이터 업데이트
+        window.onload = function() {
+            const savedData = localStorage.getItem('clubData');
+            const savedClubImage = localStorage.getItem('club-image');
+            const savedDescriptionImage = localStorage.getItem('description-image');
+            const savedActivitiesImage = localStorage.getItem('activities-image');
+
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+
+                // 동아리 제목과 소개 업데이트
+                document.getElementById('club-title').textContent = formData.club_name || "동아리 소개";
+                document.getElementById('club-description').textContent = formData.club_description || "동아리 소개 내용이 여기에 표시됩니다.";
+
+                // 추가 데이터 업데이트
+                document.querySelector('.club-info').innerHTML = `
+                    <p><strong>동아리 이름:</strong> ${formData.club_name}</p>
+                    <p><strong>회장:</strong> ${formData.club_leader}</p>
+                    <p><strong>동아리방:</strong> ${formData.club_room}</p>
+                    <p><strong>연락처:</strong> ${formData.contact}</p>
+                    <p><strong>모임시간:</strong> ${formData.meeting_time}</p>
+                    <p><strong>카테고리:</strong> ${formData.category}</p>
+                `;
+                
+                // 활동 내용 업데이트
+                document.getElementById('club-activities').textContent = formData.club_activities || "활동 내용이 여기에 표시됩니다.";
+
+                // 이미지 업데이트
+                if (savedClubImage) {
+                    document.getElementById('club-image').src = savedClubImage;
+                } else {
+                    document.getElementById('club-image').src = ""; // 기본 이미지
+                }
+
+                if (savedDescriptionImage) {
+                    document.getElementById('description-image').src = savedDescriptionImage;
+                }
+
+                if (savedActivitiesImage) {
+                    document.getElementById('activities-image').src = savedActivitiesImage;
+                } else {
+                    document.getElementById('activities-image').src = ""; // 기본 활동 이미지
+                }
+            } else {
+                alert('저장된 동아리 정보가 없습니다.');
+            }
+        };
+        
+        document.getElementById("join-btn").addEventListener("click", () => {
+            window.location.href = "userForm.html";
+        });
+
+        document.querySelector('.tab-button[data-target="reviews"]').addEventListener("click", () => {
+            window.location.href = "reviewList.html";
+        });
+    
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
-
+        
         tabButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const target = this.getAttribute('data-target');
@@ -216,67 +290,65 @@
                 tabContents.forEach(content => {
                     content.classList.add('hidden');
                 });
-
+                
                 document.getElementById(target).classList.remove('hidden');
             });
         });
-    </script>
+    
+        // function isLoggedIn() {
+        //     return true; // 로그인된 상태라고 가정
+        // }
 
-    <script>
-        function isLoggedIn() {
-            return true; // 로그인된 상태라고 가정
-        }
-
-        // 페이지 로드 시 콘텐츠 표시 제어 함수
-        function displayContent() {
-            const activitiesTab = document.getElementById('activities');
-            const activitiesButton = document.querySelector('[data-target="activities"]');
+        // // 페이지 로드 시 콘텐츠 표시 제어 함수
+        // function displayContent() {
+        //     const activitiesTab = document.getElementById('activities');
+        //     const activitiesButton = document.querySelector('[data-target="activities"]');
             
-            if (!isLoggedIn()) {
-                activitiesTab.innerHTML = "동아리 회원만 볼 수 있는 내용입니다. 로그인 후 다시 시도해주세요.";
-                activitiesButton.style.display = 'none'; // 회원이 아닌 경우 활동 내용 탭 버튼을 숨김
-            }
-        }
+        //     if (!isLoggedIn()) {
+        //         activitiesTab.innerHTML = "동아리 회원만 볼 수 있는 내용입니다. 로그인 후 다시 시도해주세요.";
+        //         activitiesButton.style.display = 'none'; // 회원이 아닌 경우 활동 내용 탭 버튼을 숨김
+        //     }
+        // }
 
-        window.onload = displayContent;
-    </script>
+        // window.onload = displayContent;
+    
 
-    <div id="announcements" class="tab-content hidden">
-        <div id="announcement-list">공지사항을 불러오는 중...</div>
-        <div id="announcement-form" class="hidden">
-            <h3>새 공지사항 작성</h3>
-            <textarea id="announcement-text" rows="4" cols="50"></textarea>
-            <button onclick="postAnnouncement()">공지사항 올리기</button>
-        </div>
-    </div>
+        // <div id="announcements" class="tab-content hidden">
+        //     <div id="announcement-list">공지사항을 불러오는 중...</div>
+        //     <div id="announcement-form" class="hidden">
+        //         <h3>새 공지사항 작성</h3>
+        //         <textarea id="announcement-text" rows="4" cols="50"></textarea>
+        //         <button onclick="postAnnouncement()">공지사항 올리기</button>
+        //     </div>
+        // </div>
 
-    <script>
+    
 
-        function isAdmin() {
+        // function isAdmin() {
 
-            return true; // 예시로 관리자 상태라고 가정
-        }
-
-
-        function loadAnnouncements() {
-
-            document.getElementById('announcement-list').innerHTML = "여기에 공지사항 내용이 표시됩니다.";
-        }
+        //     return true; // 예시로 관리자 상태라고 가정
+        // }
 
 
-        function postAnnouncement() {
-            const text = document.getElementById('announcement-text').value;
+        // function loadAnnouncements() {
 
-            alert("공지사항이 업로드되었습니다: " + text);
-        }
+        //     document.getElementById('announcement-list').innerHTML = "여기에 공지사항 내용이 표시됩니다.";
+        // }
 
 
-        window.onload = function() {
-            loadAnnouncements(); // 공지사항 목록 로드
-            if (isAdmin()) { // 관리자인 경우 공지사항 작성 폼 표시
-                document.getElementById('announcement-form').classList.remove('hidden');
-            }
-        };
+        // function postAnnouncement() {
+        //     const text = document.getElementById('announcement-text').value;
+
+        //     alert("공지사항이 업로드되었습니다: " + text);
+        // }
+
+
+        // window.onload = function() {
+        //     loadAnnouncements(); // 공지사항 목록 로드
+        //     if (isAdmin()) { // 관리자인 경우 공지사항 작성 폼 표시
+        //         document.getElementById('announcement-form').classList.remove('hidden');
+        //     }
+        // };
     </script>
 
 </body>

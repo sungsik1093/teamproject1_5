@@ -131,3 +131,17 @@ button:active {
     transform: scale(0.95);
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* userForm페이지의 답변 */
+.form-answer-input {
+    width: 100%;
+    font-size: 16px;
+    border: none;
+    background: none;
+    margin-top: 5px;
+    padding: 10px 0;
+}
+
+.form-answer-input:focus {
+    outline: none;
+}

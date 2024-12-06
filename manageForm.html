@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가입 설문 - 관리</title>
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <main class="form">
+        <div class="form-header">
+            <input type="text" id="title" class="form-title" placeholder="설문지 제목을 입력하세요.">
+            <input id="description" class="form-description" placeholder="설문지 설명을 입력하세요."></input>
+        </div>
+
+        <div id="items" class="form-items">
+            
+        </div>
+
+        <div class="form-footer">
+            <button id="add-question" class="add-btn">+</button>
+            <button id="submit" class="submit-btn">수정 완료</button>
+            <button id="clear-form" class="clear-btn">폼 삭제</button>
+            <button id="create-form" class="create-btn">새로 만들기</button>
+        </div>
+    </main>
+</body>
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // 로컬 스토리지에서 설문 데이터 불러오기
+    const surveyData = JSON.parse(localStorage.getItem("surveyData")) || null;
+
+    // 설문 데이터가 없으면 경고
+    if (!surveyData || !surveyData.title || !surveyData.questions || surveyData.questions.length === 0) {
+        alert("설문 데이터가 없습니다.");
+        return;
+    }
+
+    const titleElement = document.getElementById("title");
+    const descriptionElement = document.getElementById("description");
+    const itemsContainer = document.getElementById("items");
+
+    // 설문지 제목 및 설명을 수정 가능한 필드로 설정
+    titleElement.value = surveyData.title;
+    descriptionElement.value = surveyData.description;
+
+    // 질문 항목을 화면에 표시하고 수정할 수 있도록 설정
+    surveyData.questions.forEach((question, index) => {
+        const formItem = document.createElement("div");
+        formItem.classList.add("form-item");
+
+        formItem.innerHTML = `
+            <div class="question-box">
+                <input type="text" id="question-${index}" class="form-question" value="${question}" placeholder="질문을 입력하세요.">
+                <div class="form-answer">
+                    <span>답변이 여기에 표시됩니다.</span>
+                </div>
+            </div>
+            <button class="delete-btn">삭제</button>
+        `;
+
+        itemsContainer.appendChild(formItem);
+    });
+
+    // 질문 추가 기능
+    document.getElementById("add-question").addEventListener("click", () => {
+        const newItem = document.createElement("div");
+        newItem.classList.add("form-item");
+        newItem.innerHTML = `
+            <div class="question-box">
+                <input type="text" class="form-question" placeholder="새로운 질문을 입력하세요.">
+            </div>
+            <div class="form-answer">
+                <span>답변이 여기에 표시됩니다.</span>
+            </div>
+            <button class="delete-btn">삭제</button>
+        `;
+        itemsContainer.appendChild(newItem);
+    });
+
+    // 질문 항목 삭제 기능
+    document.getElementById("items").addEventListener("click", (e) => {
+        if (e.target.classList.contains("delete-btn")) {
+            e.target.closest(".form-item").remove();
+        }
+    });
+
+    // 수정 완료 버튼 클릭 시
+    document.getElementById("submit").addEventListener("click", () => {
+        const updatedQuestions = [];
+        const updatedAnswers = [];
+
+        // 수정된 제목과 설명을 가져오기
+        const updatedTitle = titleElement.value.trim();
+        const updatedDescription = descriptionElement.value.trim();
+
+        // 수정된 질문과 답변을 가져오기
+        const questionInputs = document.querySelectorAll(".form-question");
+        const answerInputs = document.querySelectorAll(".form-answer-input");
+
+        questionInputs.forEach((input, index) => {
+            updatedQuestions.push(input.value.trim());
+
+            // answerInputs의 index가 유효한지 확인하고, 없으면 "답변 없음"으로 처리
+            const answerInput = answerInputs[index];
+            updatedAnswers.push(answerInput ? answerInput.value.trim() : "답변 없음");
+        });
+
+        // 제목과 설명이 비어있지 않으면 수정된 설문 데이터 생성
+        if (updatedTitle && updatedDescription && updatedQuestions.length > 0) {
+            // 수정 내용 저장 여부 확인
+            if (confirm("수정 내용을 저장하시겠습니까?")) {
+                const updatedSurveyData = {
+                    title: updatedTitle,
+                    description: updatedDescription,
+                    questions: updatedQuestions,
+                    answers: updatedAnswers
+                };
+
+                // 수정된 데이터를 로컬스토리지에 저장
+                localStorage.setItem("surveyData", JSON.stringify(updatedSurveyData));
+
+                alert("설문이 수정되었습니다.");
+
+                // 수정이 완료되면 관리자 페이지로 돌아가기
+                window.location.href = "manageForm.html";  // 관리 페이지로 이동
+            }
+        } else {
+            alert("설문 제목, 설명 또는 질문이 비어있습니다. 모두 입력해주세요.");
+        }
+    });
+
+    // 폼 전체 삭제 기능
+    document.getElementById("clear-form").addEventListener("click", () => {
+        if (confirm("정말로 모든 데이터를 삭제하시겠습니까?")) {
+            // 로컬스토리지에서 설문 데이터 삭제
+            localStorage.removeItem("surveyData");
+
+            // 폼 초기화
+            titleElement.value = "";
+            descriptionElement.value = "";
+            itemsContainer.innerHTML = "";
+
+            alert("폼이 삭제되었습니다.");
+        }
+    });
+
+    document.getElementById("create-form").addEventListener("click", () => {
+        window.location.href = "form.html"; 
+    });
+});
+</script>
