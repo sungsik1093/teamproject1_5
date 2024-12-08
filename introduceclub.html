@@ -68,6 +68,12 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         } */
 
+        #club-title span {
+            font-size: 0.8em;
+            color: gray;
+            margin-left: 5px;
+        }
+
         .club-info {
             margin-top: 20px;
             background-color: #fff;
@@ -89,6 +95,20 @@
 
         button:hover {
             background-color: #0056b3;
+        }
+
+        #status-container {
+            margin-top: 20px;
+        }
+
+        #status-text {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background-color: rgb(127, 218, 127);
+            color: white;
+            font-size: 16px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
         }
 
         footer {
@@ -192,7 +212,10 @@
             <img id="club-image" alt="동아리 대표 사진" src="">
             <div class="club-info">
             </div>
-            <button id="join-btn">가입하기</button>
+            <button><a href="" id="join-btn" target="_blank">가입하기</a></button>
+            <span id="status-container"> 
+                <span id="status-text"></span>
+            </span>
 
             <div class="tab-section">
                 <div class="tab-buttons">
@@ -231,7 +254,9 @@
                 const formData = JSON.parse(savedData);
 
                 // 동아리 제목과 소개 업데이트
-                document.getElementById('club-title').textContent = formData.club_name || "동아리 소개";
+                // document.getElementById('club-title').textContent = formData.club_name || "동아리 소개";
+                document.getElementById('club-title').innerHTML = 
+                    `${formData.club_name || "동아리 소개"} <span>정동아리</span>`;
                 document.getElementById('club-description').textContent = formData.club_description || "동아리 소개 내용이 여기에 표시됩니다.";
 
                 // 추가 데이터 업데이트
@@ -268,9 +293,29 @@
             }
         };
         
-        document.getElementById("join-btn").addEventListener("click", () => {
-            window.location.href = "userForm.html";
+        const savedLink = localStorage.getItem('formLink');
+        const linkButton = document.getElementById('join-btn');
+
+        if (savedLink) {
+            linkButton.href = savedLink;
+        } else {
+            linkButton.style.pointerEvents = 'none'; // 클릭 비활성화
+            linkButton.style.color = 'gray';
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusText = document.getElementById('status-text');
+            const storedStatus = localStorage.getItem('clubStatus') || '모집 중';  // 기본값은 '모집 중'
+
+            // 상태 텍스트 업데이트
+            statusText.textContent = storedStatus;
+
+            // 모집 마감일 경우 배경색 변경
+            if (storedStatus === '모집 마감') {
+                statusText.style.backgroundColor = 'rgb(171, 171, 171)';  // 색상 변경
+            }
         });
+        
 
         document.querySelector('.tab-button[data-target="reviews"]').addEventListener("click", () => {
             window.location.href = "reviewList.html";

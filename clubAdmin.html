@@ -60,6 +60,12 @@
             padding: 40px 0;
         }
 
+        #club-title span {
+            font-size: 0.8em;
+            color: gray;
+            margin-left: 5px;
+        }
+
         /* .club-image {
             width: 100%;
             height: auto;
@@ -89,6 +95,49 @@
 
         button:hover {
             background-color: #0056b3;
+        }
+
+        .toggle-container {
+            width: 200px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .toggle-container p{
+            display: inline-block;
+            line-height: 57px;
+        }
+
+        .toggleSwitch {
+            width: 60px;
+            height: 30px;
+            display: inline-block;
+            position: relative;
+            border-radius: 30px;
+            background-color: rgb(171, 171, 171);
+            box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
+            cursor: pointer;
+        }
+        
+        .toggleSwitch .toggleButton {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 50%;
+            left: 4px;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            background: white;
+            transition: all 0.2s ease-in;
+        }
+
+        /* 체크박스가 체크되면 변경 이벤트 */
+        #toggle:checked ~ .toggleSwitch {
+            background: rgb(127, 218, 127);;
+        }
+
+        #toggle:checked ~ .toggleSwitch .toggleButton {
+            left: calc(100% - 25px);
         }
 
         footer {
@@ -180,7 +229,6 @@
                 <ul>
                     <li><a href="main.html" class="main-page" target="_blank">홈</a></li>
                     <li><a href="Q&A.html" class="Q&A-page" target="_blank">문의하기</a></li>
-                    <li><a href="clubAdmin.html">관리자 페이지</a></li>
                 </ul>
             </nav>
         </div>
@@ -193,8 +241,16 @@
             <div class="club-info">
             </div>
             <button id="edit-btn">프로필 수정</button>
-            <button id="manageForm-btn">가입 폼 관리</button>
-            <button id="showForm-btn">신청 확인</button>
+            <button id="newForm-btn">가입 폼 생성</button>
+            <button id="showUser-btn">회원 확인</button>
+
+            <div class="toggle-container">
+                <p>모집 현황</p>
+                <input type="checkbox" id="toggle" hidden>
+                <label for="toggle" class="toggleSwitch">
+                    <span class="toggleButton"></span>
+                </label>
+            </div>
 
             <div class="tab-section">
                 <div class="tab-buttons">
@@ -233,7 +289,9 @@
                 const formData = JSON.parse(savedData);
 
                 // 동아리 제목과 소개 업데이트
-                document.getElementById('club-title').textContent = formData.club_name || "동아리 소개";
+                // document.getElementById('club-title').textContent = formData.club_name || "동아리 소개";
+                document.getElementById('club-title').innerHTML = 
+                    `${formData.club_name || "동아리 소개"} <span>정동아리</span>`;
                 document.getElementById('club-description').textContent = formData.club_description || "동아리 소개 내용이 여기에 표시됩니다.";
 
                 // 추가 데이터 업데이트
@@ -273,13 +331,32 @@
         document.getElementById("edit-btn").addEventListener("click", () => {
             window.location.href = "introduceclubEdit.html";
         });
-        document.getElementById("manageForm-btn").addEventListener("click", () => {
-            window.location.href = "manageForm.html";
+        document.getElementById("newForm-btn").addEventListener("click", () => {
+            window.location.href = "newForm.html";
         });
-        document.getElementById("showForm-btn").addEventListener("click", () => {
-            window.location.href = "showForm.html";
+        document.getElementById("showUser-btn").addEventListener("click", () => {
+            window.location.href = "showUser.html";
         });
 
+       
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggle = document.getElementById("toggle");
+            // 저장된 상태를 확인하여 토글 초기값 설정
+            const storedStatus = localStorage.getItem('clubStatus');
+            if (storedStatus === '모집 마감') {
+                toggle.checked = true;  // 토글이 "모집 마감"으로 설정됨
+            } else {
+                toggle.checked = false;  // 토글이 "모집 중"으로 설정됨
+            }
+        });
+
+        // 토글 버튼 상태 변경 시
+        toggle.addEventListener("change", function() {
+            const status = toggle.checked ? '모집 중' : '모집 마감';
+            localStorage.setItem('clubStatus', status);  // 상태를 localStorage에 저장
+        });
+
+        
         document.querySelector('.tab-button[data-target="reviews"]').addEventListener("click", () => {
             window.location.href = "reviewList.html";
         });
@@ -302,7 +379,7 @@
                 document.getElementById(target).classList.remove('hidden');
             });
         });
-    
+        
         // function isLoggedIn() {
         //     return true; // 로그인된 상태라고 가정
         // }
